@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+#
+# mirror_diamond.sh — print a mirrored-diamond pattern for any word
+#
+
+# Read word from first argument or prompt
+word="${1:-}"
+if [ -z "$word" ]; then
+  read -p "Enter a word: " word
+fi
+
+# Length of the word
+n=${#word}
+
+# Helper: generate a string of $1 spaces
+spaces() {
+  printf '%*s' "$1" ''
+}
+
+# Build top half (including middle line)
+for ((i=1; i<=n; i++)); do
+  left=${word:0:i}
+  # reverse with rev
+  right=$(printf '%s' "$left" | rev)
+  sp=$(spaces $((n - i)))
+  printf '%s%s  %s\n' "$sp" "$left" "$right"
+done
+
+# Build bottom half (excluding the middle line)
+for ((i=n-1; i>=1; i--)); do
+  left=${word:0:i}
+  right=$(printf '%s' "$left" | rev)
+  sp=$(spaces $((n - i)))
+  printf '%s%s  %s\n' "$sp" "$left" "$right"
+done
+
